@@ -8,7 +8,7 @@ export const PlaylistPreview = ({
   return (
     <a href={`/playlists/${playlist.id}`}>
       <div
-        className="border bg-card text-card-foreground shadow-sm flex flex-col justify-between hover:border-green-500"
+        className="transition-all hover:p-1 bg-card text-card-foreground shadow-sm flex flex-col justify-between hover:border-2 hover:border-green-500"
         data-v0-t="card"
         key={playlist.id}
       >

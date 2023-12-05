@@ -15,17 +15,19 @@ export default function PlaylistPage() {
 
   return (
     <div className="flex flex-col h-screen w-full">
-      {playlist.isReady ? (
-        "error" in playlist ? (
-          `Failed to fetch data ${playlist.error}`
+      <div className="mb-4">
+        {playlist.isReady ? (
+          "error" in playlist ? (
+            `Failed to fetch data ${playlist.error}`
+          ) : (
+            <div>
+              <PlaylistHeader playlist={playlist.data} />
+            </div>
+          )
         ) : (
-          <div>
-            <PlaylistHeader playlist={playlist.data} />
-          </div>
-        )
-      ) : (
-        "Loading..."
-      )}
+          "Loading..."
+        )}
+      </div>
 
       {tracks.state.isReady ? (
         "error" in tracks.state ? (
