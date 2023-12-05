@@ -8,12 +8,10 @@ const scopes = [
   "playlist-read-private",
 ];
 
+const redirectUri = process.env.NEXT_PUBLIC_API_HOST || "http://localhost:3000";
+
 export const useSpotify = () => {
-  const sdk = SpotifyApi.withUserAuthorization(
-    clientId,
-    "http://localhost:3000",
-    scopes,
-  );
+  const sdk = SpotifyApi.withUserAuthorization(clientId, redirectUri, scopes);
 
   return {
     sdk,
