@@ -5,8 +5,8 @@ interface AvatarProps {
 
 export const Avatar = (props: AvatarProps) => {
   return (
-    <div className="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:bg-white-400 dark:hover:bg-gray-900">
-      <span className="relative flex shrink-0 overflow-hidden rounded-full h-14 w-14">
+    <div className="flex items-center p-4 rounded-lg shadow-md">
+      <span className="relative flex shrink-0 overflow-hidden rounded-full h-14 w-14 hover:border hover:border-green-500">
         {props.url ? (
           <img
             src={props.url}
@@ -20,11 +20,6 @@ export const Avatar = (props: AvatarProps) => {
           </span>
         )}
       </span>
-      <div className="ml-4">
-        <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-          {props.display_name}
-        </h2>
-      </div>
     </div>
   );
 };

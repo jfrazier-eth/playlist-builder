@@ -12,22 +12,26 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-screen w-full">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        {user.isReady ? (
-          "error" in user ? (
-            `Error: ${user.error}`
+      <div className="flex flex-row items-center mb-4">
+        <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 grow">
+          Playlists
+        </h2>
+        <div className="font-mono text-sm lg:flex">
+          {user.isReady ? (
+            "error" in user ? (
+              `Error: ${user.error}`
+            ) : (
+              <Avatar
+                display_name={user.data.display_name}
+                url={user.data.images?.[0]?.url}
+              />
+            )
           ) : (
-            <Avatar
-              display_name={user.data.display_name}
-              url={user.data.images?.[0]?.url}
-            />
-          )
-        ) : (
-          "Loading..."
-        )}
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none"></div>
+            "Loading..."
+          )}
+        </div>
       </div>
-      <div className="w-full mt-8 items-center justify-start font-mono text-sm lg:flex flex-col overflow-scroll grow">
+      <div className="w-full items-center justify-start font-mono text-sm lg:flex flex-col overflow-scroll grow">
         {playlistState.isReady ? (
           "error" in playlistState ? (
             `Error: ${playlistState.error}`
