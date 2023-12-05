@@ -41,9 +41,11 @@ export const Playlists = (props: {
               key={item.id}
             >
               <div className="space-y-1.5 p-6 flex flex-row items-center gap-4">
-                <MusicLogo />
+                <img src={item.images[0]?.url} />
+              </div>
+              <div className="space-y-1.5 p-6 flex flex-row items-center gap-4">
                 <div className="grid gap-1">
-                  <h3 className="text-2xl font-semibold leading-none tracking-tight">
+                  <h3 className="text-2xl font-semibold leading-none tracking-tight overflow-hidden w-full max-h-12">
                     {item.name}
                   </h3>
                   <p className="text-sm text-muted-foreground">
