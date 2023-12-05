@@ -36,24 +36,28 @@ export const Playlists = (props: {
         {props.state.items.map((item) => {
           return (
             <div
-              className="rounded-lg border bg-card text-card-foreground shadow-sm"
+              className="rounded-lg border bg-card text-card-foreground shadow-sm flex flex-col justify-between"
               data-v0-t="card"
               key={item.id}
             >
               <div className="space-y-1.5 p-6 flex flex-row items-center gap-4">
                 <img src={item.images[0]?.url} />
               </div>
-              <div className="space-y-1.5 p-6 flex flex-row items-center gap-4">
-                <div className="grid gap-1">
+              <div className="space-y-1.5 p-6 flex flex-col w-full items-start gap-4">
+                <div className="">
                   <h3 className="text-2xl font-semibold leading-none tracking-tight overflow-hidden w-full max-h-12">
                     {item.name}
                   </h3>
+                </div>
+
+                <div className="flex flex-row justify-between w-full">
                   <p className="text-sm text-muted-foreground">
                     {item.tracks?.total} Tracks
                   </p>
-                </div>
-                <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground ml-auto">
-                  {item.public ? "Public" : "Private"}
+
+                  <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground ml-auto">
+                    {item.public ? "Public" : "Private"}
+                  </div>
                 </div>
               </div>
             </div>
