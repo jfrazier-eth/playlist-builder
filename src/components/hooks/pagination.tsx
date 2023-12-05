@@ -1,4 +1,4 @@
-import { Page, SpotifyApi } from "@spotify/web-api-ts-sdk";
+import { Page } from "@spotify/web-api-ts-sdk";
 import { useEffect, useState } from "react";
 
 export type AsyncData<T> =
@@ -101,13 +101,4 @@ export const useItem = <T,>(getItem: () => Promise<T>) => {
   }, []);
 
   return data;
-};
-
-export const usePlaylists = (sdk: SpotifyApi) => {
-  const loadNext = async (options: { offset: number }) => {
-    return await sdk.currentUser.playlists.playlists(20, options.offset);
-  };
-  const pagination = usePagination(loadNext);
-
-  return pagination;
 };

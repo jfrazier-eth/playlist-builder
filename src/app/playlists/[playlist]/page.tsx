@@ -1,33 +1,10 @@
 "use client";
+import { usePlaylist, usePlaylistTracks } from "@/components/hooks/playlists";
 import { useSpotify } from "@/components/hooks/useSpotify";
 import { PlaylistHeader } from "@/components/playlists/playlist-header";
-import { PlaylistPreview } from "@/components/playlists/playlist-preview";
 import { PlaylistTracks } from "@/components/playlists/playlist-tracks";
-import { useItem, usePagination } from "@/components/playlists/usePlaylists";
-import { PlaylistedTrack, SpotifyApi } from "@spotify/web-api-ts-sdk";
+
 import { useParams } from "next/navigation";
-
-const usePlaylist = (playlistId: string, sdk: SpotifyApi) => {
-  const getItem = () => {
-    return sdk.playlists.getPlaylist(playlistId);
-  };
-  return useItem(getItem);
-};
-
-const usePlaylistTracks = (playlistId: string, sdk: SpotifyApi) => {
-  // sdk.playlists.getPlaylistItems
-  const loadNext = async (options: { offset: number }) => {
-    return await sdk.playlists.getPlaylistItems(
-      playlistId,
-      "US",
-      undefined,
-      50,
-      options.offset,
-    );
-  };
-
-  return usePagination<PlaylistedTrack>(loadNext);
-};
 
 export default function PlaylistPage() {
   const params = useParams<{ playlist: string }>();

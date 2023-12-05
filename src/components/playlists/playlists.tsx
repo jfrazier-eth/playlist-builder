@@ -1,6 +1,6 @@
 import { SimplifiedPlaylist } from "@spotify/web-api-ts-sdk";
-import { UnwrappedPaginationResponse } from "./usePlaylists";
 import { PlaylistPreview } from "./playlist-preview";
+import { UnwrappedPaginationResponse } from "../hooks/pagination";
 
 export const Playlists = (props: {
   state: UnwrappedPaginationResponse<SimplifiedPlaylist>;
