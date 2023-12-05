@@ -2,10 +2,13 @@ import { PlaylistedTrack } from "@spotify/web-api-ts-sdk";
 
 export const PlaylistTracks = (props: { tracks: PlaylistedTrack[] }) => {
   return (
-    <div className="grow overflow-scroll w-full space-y-2">
-      {props.tracks.map((item) => {
+    <div className="grow overflow-scroll w-full space-y-2 pb-8">
+      {props.tracks.map((item, index) => {
         return (
-          <div className="flex items-center gap-4 m-1 transition-all hover:p-1 hover:border rounded-lg hover:border-green-500">
+          <div
+            className="flex items-center gap-4 m-1 transition-all hover:p-1 hover:border rounded-lg hover:border-green-500"
+            key={`${index + 1}`}
+          >
             <img
               src={"track" in item.track ? item.track.album.images[0]?.url : ""}
               alt="Track 1"

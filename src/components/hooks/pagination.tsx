@@ -16,15 +16,15 @@ export type PaginationResponse<T> = AsyncData<UnwrappedPaginationResponse<T>>;
 
 export const usePagination = <T,>(
   loadNext: (options: { offset: number }) => Promise<Page<T>>,
+  loadAll = false,
 ) => {
-  const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const [state, setState] = useState<PaginationResponse<T>>({
     isReady: false,
   });
 
-  const fetchNext = async () => {
+  const fetchNext = async (offset: number, signal: { abort: boolean }) => {
     if (isLoading) {
       return;
     }
@@ -32,8 +32,10 @@ export const usePagination = <T,>(
     setIsLoading(true);
     try {
       const nextPage = await loadNext({ offset });
+      if (signal.abort) {
+        return;
+      }
 
-      setOffset(nextPage.offset);
       setState((prev) => {
         let items = prev.isReady && "data" in prev ? prev.data.items : [];
         items = items.concat(nextPage.items);
@@ -41,7 +43,7 @@ export const usePagination = <T,>(
         return {
           isReady: true,
           data: {
-            complete: nextPage.total === nextPage.offset,
+            complete: nextPage.items.length === 0,
             items,
             total: nextPage.total,
           },
@@ -49,6 +51,9 @@ export const usePagination = <T,>(
       });
     } catch (err) {
       console.error(err);
+      if (signal.abort) {
+        return;
+      }
 
       setState({
         isReady: true,
@@ -60,8 +65,23 @@ export const usePagination = <T,>(
   };
 
   useEffect(() => {
-    fetchNext();
-  }, []);
+    let signal = { abort: false };
+    if (!state.isReady) {
+      fetchNext(0, signal);
+    } else if ("error" in state) {
+      console.log("Error!");
+    } else if (state.data.complete) {
+      console.log(`Complete!`);
+    } else if (loadAll) {
+      fetchNext(state.data.items.length, signal);
+    }
+
+    return () => {
+      signal.abort = true;
+    };
+  }, [loadAll, state]);
+
+  useEffect(() => {});
 
   return {
     state,

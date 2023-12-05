@@ -31,7 +31,7 @@ export default function Home() {
           )}
         </div>
       </div>
-      <div className="w-full items-center justify-start font-mono text-sm lg:flex flex-col overflow-scroll grow">
+      <div className="w-full items-center justify-start font-mono text-sm lg:flex flex-col overflow-scroll grow pb-8">
         {playlistState.isReady ? (
           "error" in playlistState ? (
             `Error: ${playlistState.error}`
