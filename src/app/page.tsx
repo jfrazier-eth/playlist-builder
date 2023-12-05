@@ -11,7 +11,7 @@ export default function Home() {
   const { state: playlistState } = usePlaylists(sdk);
 
   return (
-    <>
+    <div className="flex flex-col h-screen w-full">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         {user.isReady ? (
           "error" in user ? (
@@ -27,7 +27,7 @@ export default function Home() {
         )}
         <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none"></div>
       </div>
-      <div className="z-10 max-w-5xl w-full mt-8 items-center justify-start font-mono text-sm lg:flex flex-col">
+      <div className="w-full mt-8 items-center justify-start font-mono text-sm lg:flex flex-col overflow-scroll grow">
         {playlistState.isReady ? (
           "error" in playlistState ? (
             `Error: ${playlistState.error}`
@@ -38,6 +38,6 @@ export default function Home() {
           "Loading..."
         )}
       </div>
-    </>
+    </div>
   );
 }

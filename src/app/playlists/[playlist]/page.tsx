@@ -14,7 +14,7 @@ export default function PlaylistPage() {
   const tracks = usePlaylistTracks(playlistId, sdk);
 
   return (
-    <div>
+    <div className="flex flex-col h-screen w-full">
       {playlist.isReady ? (
         "error" in playlist ? (
           `Failed to fetch data ${playlist.error}`

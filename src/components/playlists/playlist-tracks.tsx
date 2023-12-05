@@ -2,7 +2,7 @@ import { PlaylistedTrack } from "@spotify/web-api-ts-sdk";
 
 export const PlaylistTracks = (props: { tracks: PlaylistedTrack[] }) => {
   return (
-    <div className="space-y-6">
+    <div className="grow overflow-scroll w-full">
       {props.tracks.map((item) => {
         return (
           <div className="flex items-center gap-4">

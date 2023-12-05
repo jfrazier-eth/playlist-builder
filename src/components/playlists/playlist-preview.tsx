@@ -8,16 +8,20 @@ export const PlaylistPreview = ({
   return (
     <a href={`/playlists/${playlist.id}`}>
       <div
-        className="rounded-lg border bg-card text-card-foreground shadow-sm flex flex-col justify-between hover:border-green-500"
+        className="border bg-card text-card-foreground shadow-sm flex flex-col justify-between hover:border-green-500"
         data-v0-t="card"
         key={playlist.id}
       >
-        <div className="space-y-1.5 p-6 flex flex-row items-center gap-4">
-          <img src={playlist.images[0]?.url} />
+        <div className="flex flex-row items-center gap-4">
+          <img
+            src={playlist.images[0]?.url}
+            className="w-full"
+            style={{ aspectRatio: "64 / 64", objectFit: "cover" }}
+          />
         </div>
-        <div className="space-y-1.5 p-6 flex flex-col w-full items-start gap-4">
-          <div className="">
-            <h3 className="text-2xl font-semibold leading-none tracking-tight overflow-hidden w-full max-h-12">
+        <div className="space-y-1.5 p-2 flex flex-col w-full items-start">
+          <div className="w-[100%]">
+            <h3 className="text-2xl font-semibold leading-none tracking-tight overflow-hidden text-ellipsis whitespace-nowrap w-full max-h-12">
               {playlist.name}
             </h3>
           </div>

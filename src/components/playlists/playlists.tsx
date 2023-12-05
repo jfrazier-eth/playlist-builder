@@ -12,7 +12,7 @@ export const Playlists = (props: {
           Your playlists ({props.state.total})
         </p>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 max-w-6xl w-full">
+      <div className="grid gap-2 md:grid-cols-3 lg:grid-cols-4 w-full">
         {props.state.items.map((item) => {
           return <PlaylistPreview playlist={item} />;
         })}
