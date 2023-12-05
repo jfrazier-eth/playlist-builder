@@ -70,6 +70,39 @@ export const usePagination = <T,>(
   };
 };
 
+export const useItem = <T,>(getItem: () => Promise<T>) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState<AsyncData<T>>({
+    isReady: false,
+  });
+
+  const fetch = async () => {
+    if (isLoading) {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const playlist = await getItem();
+
+      setData({
+        isReady: true,
+        data: playlist,
+      });
+    } catch (err) {
+      console.error(`Failed to get item`, err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetch();
+  }, []);
+
+  return data;
+};
+
 export const usePlaylists = (sdk: SpotifyApi) => {
   const loadNext = async (options: { offset: number }) => {
     return await sdk.currentUser.playlists.playlists(20, options.offset);

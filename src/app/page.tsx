@@ -1,17 +1,10 @@
 "use client";
 import { Avatar } from "@/components/avatar";
+import { useSpotify } from "@/components/hooks/useSpotify";
 import { Playlists } from "@/components/playlists/playlists";
 import { usePlaylists } from "@/components/playlists/usePlaylists";
 import { SpotifyApi, UserProfile } from "@spotify/web-api-ts-sdk";
 import { useEffect, useState } from "react";
-
-const clientId = "f9791754fb254d9e9f2b84afea36afed";
-const scopes = [
-  "user-read-email",
-  "user-read-private",
-  "playlist-read-collaborative",
-  "playlist-read-private",
-];
 
 const useUser = (sdk: SpotifyApi) => {
   const [user, setUser] = useState<null | UserProfile>(null);
@@ -42,18 +35,15 @@ const useUser = (sdk: SpotifyApi) => {
 };
 
 export default function Home() {
-  const sdk = SpotifyApi.withUserAuthorization(
-    clientId,
-    "http://localhost:3000",
-    scopes,
-  );
+  const { sdk } = useSpotify();
 
-  const { user, isLoading } = useUser(sdk);
+  sdk.playlists.getPlaylistItems;
+  const { user } = useUser(sdk);
 
   const { state: playlistState } = usePlaylists(sdk);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start p-24">
+    <>
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         {user ? (
           <Avatar
@@ -76,6 +66,6 @@ export default function Home() {
           "Loading..."
         )}
       </div>
-    </main>
+    </>
   );
 }
