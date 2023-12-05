@@ -1,16 +1,18 @@
 import { Page, SpotifyApi } from "@spotify/web-api-ts-sdk";
 import { useEffect, useState } from "react";
 
-type AsyncData<T> =
+export type AsyncData<T> =
   | { isReady: false }
   | { isReady: true; error: string }
   | { isReady: true; data: T };
 
-type PaginationResponse<T> = AsyncData<{
+export type UnwrappedPaginationResponse<T> = {
   complete: boolean;
   items: T[];
   total: number;
-}>;
+};
+
+export type PaginationResponse<T> = AsyncData<UnwrappedPaginationResponse<T>>;
 
 export const usePagination = <T,>(
   loadNext: (options: { offset: number }) => Promise<Page<T>>,
@@ -34,7 +36,8 @@ export const usePagination = <T,>(
       setOffset(nextPage.offset);
       setState((prev) => {
         let items = prev.isReady && "data" in prev ? prev.data.items : [];
-        items.concat(nextPage.items);
+        items = items.concat(nextPage.items);
+
         return {
           isReady: true,
           data: {
