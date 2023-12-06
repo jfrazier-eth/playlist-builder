@@ -76,15 +76,6 @@ export const PlaylistTracks = ({
                   value={features.danceability}
                 />
                 <EmojiLevelByType kind="energy" value={features.energy} />
-                {/* <div className="flex flex-col text-right">
-                <p>Danceability</p> <p>{features.danceability}</p>
-              </div>
-              <div className="flex flex-col text-right">
-                <p>Energy</p> <p>{features.energy}</p>
-              </div>
-              <div className="flex flex-col text-right">
-                <p>Tempo</p> <p>{features.tempo}</p>
-              </div> */}
               </div>
             </div>
           );
