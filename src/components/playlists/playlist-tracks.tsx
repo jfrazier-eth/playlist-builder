@@ -1,12 +1,46 @@
+import { useElementSize } from "@/app/playlists/[playlist]/page";
 import { AudioFeatures, PlaylistedTrack } from "@spotify/web-api-ts-sdk";
+import { DataSet, LineChart } from "../charts.tsx/line";
 
 export const PlaylistTracks = ({
   items,
 }: {
   items: { track: PlaylistedTrack; features: AudioFeatures }[];
 }) => {
+  const [boxRef, { width }] = useElementSize();
+
+  const dataSetKeys = [
+    // "acousticness",
+    "danceability",
+    "energy",
+    // "instrumentalness",
+    // "liveness",
+    // "speechiness",
+    "valence",
+  ] as const;
+
+  const dataSets = dataSetKeys.map((key) => {
+    const dataSet: DataSet<{ x: string; y: number }> = {
+      id: key,
+      title: key,
+      data: items.map((item, index) => {
+        return {
+          x: `${item.track.track.name} (Track ${index})`,
+          y: item.features[key],
+        };
+      }),
+      xAccessor: (item) => item.x,
+      yAccessor: (item) => item.y,
+    };
+
+    return dataSet;
+  });
   return (
-    <div className="grow overflow-scroll w-full space-y-2 pb-8">
+    <div className="grow overflow-scroll w-full space-y-2 pb-8" ref={boxRef}>
+      <div className="w-full h-[300px]">
+        <LineChart width={width} height={300} dataSets={dataSets} />
+      </div>
+
       {items.map(({ track: item, features }, index) => {
         return (
           <div

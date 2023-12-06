@@ -1,5 +1,7 @@
 import { SimplifiedPlaylist } from "@spotify/web-api-ts-sdk";
 import { AudioFeatureAverages } from "../hooks/playlists";
+import { AnimatedBarSeries, Tooltip, XYChart } from "@visx/xychart";
+import { useElementSize } from "@/app/playlists/[playlist]/page";
 
 export const PlaylistHeader = ({
   playlist,
@@ -8,6 +10,7 @@ export const PlaylistHeader = ({
   playlist: SimplifiedPlaylist;
   averages: AudioFeatureAverages;
 }) => {
+  const [boxRef, { width }] = useElementSize();
   return (
     <div className="flex items-start flex-row space-y-0 space-x-8 h-[200px]">
       <img
@@ -20,55 +23,68 @@ export const PlaylistHeader = ({
       />
       <div className="flex flex-col justify-between h-full grow">
         <div>
-          <h2 className="text-4xl font-bold">{playlist.name}</h2>
-          <p className="text-gray-500 dark:text-gray-400">
-            {playlist.tracks?.total} Tracks
-          </p>
+          <h2 className="text-lg font-bold">{playlist.name}</h2>
         </div>
-        <div className="text-gray-500 dark:text-gray-400">
+        <div className="text-gray-500 dark:text-gray-400 text-sm">
           <p>{playlist.description}</p>
         </div>
 
-        <div className="grid gap-2 md:grid-cols-3 lg:grid-cols-4 w-full text-sm text-gray-400 dark:text-gray-400">
-          <div>
-            <p>Danceability {averages.danceability.toFixed(4)}</p>
-          </div>
-          <div>
-            <p>Energy {averages.energy.toFixed(4)}</p>
-          </div>
-          {/* <div className="text-md text-gray-400 dark:text-gray-400">
-            <p>Key {averages.key.toFixed(4)}</p>
-          </div> */}
-          {/* <div className="text-md text-gray-400 dark:text-gray-400">
-            <p>Loudness {averages.loudness.toFixed(4)}</p>
-          </div> */}
-          {/* <div className="text-md text-gray-400 dark:text-gray-400">
-            <p>Mode {averages.mode.toFixed(4)}</p>
-          </div> */}
-          {/* <div className="text-md text-gray-400 dark:text-gray-400">
-            <p>Speechiness {averages.speechiness.toFixed(4)}</p>
-          </div> */}
-          {/* <div className="text-md text-gray-400 dark:text-gray-400">
-            <p>Acousticness {averages.acousticness.toFixed(4)}</p>
-          </div>
-          <div className="text-md text-gray-400 dark:text-gray-400">
-            <p>Instrumentalness {averages.instrumentalness.toFixed(4)}</p>
-          </div> */}
-          {/* <div className="text-md text-gray-400 dark:text-gray-400">
-            <p>Liveness {averages.liveness.toFixed(4)}</p>
-          </div> */}
-          {/* <div className="text-md text-gray-400 dark:text-gray-400">
-            <p>Valence {averages.valence.toFixed(4)}</p>
-          </div> */}
-          <div>
-            <p>Tempo {averages.tempo.toFixed(4)}</p>
-          </div>
-          {/* <div className="text-md text-gray-400 dark:text-gray-400">
-            <p>Duration {averages.duration_ms.toFixed(4)}</p>
-          </div> */}
-          {/* <div className="text-md text-gray-400 dark:text-gray-400">
-            <p>Time signature {averages.time_signature.toFixed(4)}</p>
-          </div> */}
+        <div className="w-full border border-white m-1" ref={boxRef}>
+          <XYChart
+            height={100}
+            width={width - 16}
+            xScale={{ type: "linear", domain: [0, 1] }}
+            yScale={{ type: "band" }}
+            margin={{ top: 8, left: 8, right: 8, bottom: 8 }}
+          >
+            <AnimatedBarSeries
+              dataKey="Metrics"
+              data={(["energy", "danceability", "valence"] as const).map(
+                (key) => ({
+                  x: averages[key],
+                  y: key,
+                }),
+              )}
+              xAccessor={(avg) => avg.x}
+              yAccessor={(avg) => avg.y}
+              colorAccessor={(datum) => {
+                switch (datum.y) {
+                  case "energy": {
+                    return "#ffef55";
+                  }
+                  case "danceability": {
+                    return "#f24f26";
+                  }
+                  case "valence": {
+                    return "#0097c3";
+                  }
+                }
+              }}
+            />
+
+            <Tooltip
+              snapTooltipToDatumX
+              snapTooltipToDatumY
+              showVerticalCrosshair
+              showSeriesGlyphs
+              renderTooltip={({ tooltipData, colorScale }) => {
+                let key = tooltipData?.nearestDatum?.key;
+                const datum = tooltipData?.nearestDatum?.datum as
+                  | { x: number; y: string }
+                  | undefined;
+                if (!key || !datum) {
+                  return <></>;
+                }
+                const color = colorScale?.(key);
+                return (
+                  <div>
+                    <div style={{ color }}>{key}</div>
+                    {`${datum.y}: ${datum.x.toFixed(4)}`}
+                  </div>
+                );
+              }}
+            />
+          </XYChart>
         </div>
 
         <div className="flex flex-row justify-between w-full">
@@ -78,6 +94,9 @@ export const PlaylistHeader = ({
             </div>
             <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground">
               {playlist.followers.total} Followers
+            </div>
+            <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground">
+              {playlist.tracks?.total} Tracks
             </div>
           </div>
 

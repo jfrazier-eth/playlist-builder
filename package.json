@@ -9,7 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-hook/resize-observer": "^1.2.6",
+    "@react-spring/web": "^9.7.3",
     "@spotify/web-api-ts-sdk": "^1.1.2",
+    "@visx/axis": "^3.5.0",
+    "@visx/curve": "^3.3.0",
+    "@visx/group": "^3.3.0",
+    "@visx/legend": "^3.5.0",
+    "@visx/mock-data": "^3.3.0",
+    "@visx/scale": "^3.5.0",
+    "@visx/shape": "^3.5.0",
+    "@visx/tooltip": "^3.3.0",
+    "@visx/vendor": "^3.5.0",
+    "@visx/xychart": "^3.5.1",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18"
