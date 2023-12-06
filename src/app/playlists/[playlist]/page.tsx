@@ -1,10 +1,15 @@
 "use client";
-import { usePlaylist, usePlaylistTracks } from "@/components/hooks/playlists";
+import {
+  usePlaylist,
+  usePlaylistFeatures,
+  usePlaylistTracks,
+} from "@/components/hooks/playlists";
 import { useSpotify } from "@/components/hooks/useSpotify";
 import { PlaylistHeader } from "@/components/playlists/playlist-header";
 import { PlaylistTracks } from "@/components/playlists/playlist-tracks";
 
 import { useParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function PlaylistPage() {
   const params = useParams<{ playlist: string }>();
@@ -12,6 +17,8 @@ export default function PlaylistPage() {
   const playlistId = params.playlist;
   const playlist = usePlaylist(playlistId, sdk);
   const tracks = usePlaylistTracks(playlistId, sdk);
+
+  const features = usePlaylistFeatures(tracks.state, sdk);
 
   return (
     <div className="flex flex-col h-screen w-full">
@@ -29,11 +36,11 @@ export default function PlaylistPage() {
         )}
       </div>
 
-      {tracks.state.isReady ? (
-        "error" in tracks.state ? (
-          `Error: ${tracks.state.error}`
+      {features.isReady ? (
+        "error" in features ? (
+          `Error: ${features.error}`
         ) : (
-          <PlaylistTracks tracks={tracks.state.data.items} />
+          <PlaylistTracks items={features.data} />
         )
       ) : (
         "Loading..."
