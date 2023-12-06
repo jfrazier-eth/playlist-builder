@@ -3,6 +3,46 @@ import { AudioFeatureAverages } from "../hooks/playlists";
 import { AnimatedBarSeries, Tooltip, XYChart } from "@visx/xychart";
 import { useElementSize } from "@/app/playlists/[playlist]/page";
 
+enum Levels {
+  Low,
+  Medium,
+  High,
+}
+
+const getLevel = (num: number) => {
+  if (num > 0.66) {
+    return Levels.High;
+  } else if (num > 0.33) {
+    return Levels.Medium;
+  }
+  return Levels.Low;
+};
+
+const EmojiLevels = (props: {
+  level: Levels;
+  low: string;
+  medium: string;
+  high: string;
+  title: string;
+}) => {
+  const selected = "bg-gray-500 px-1 rounded-md";
+  const notSelected = "px-1";
+  return (
+    <div className="inline-flex items-center rounded-full border px-2.5  text-lg font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground">
+      <span className="text-xs mr-2">{props.title} </span>
+      <span className={props.level === Levels.High ? selected : notSelected}>
+        {props.high}
+      </span>
+      <span className={props.level === Levels.Medium ? selected : notSelected}>
+        {props.medium}
+      </span>
+      <span className={props.level === Levels.Low ? selected : notSelected}>
+        {props.low}
+      </span>
+    </div>
+  );
+};
+
 export const PlaylistHeader = ({
   playlist,
   averages,
@@ -10,6 +50,9 @@ export const PlaylistHeader = ({
   playlist: SimplifiedPlaylist;
   averages: AudioFeatureAverages;
 }) => {
+  const valenceLevel = getLevel(averages.valence);
+  const energyLevel = getLevel(averages.energy);
+  const danceLevel = getLevel(averages.danceability);
   const [boxRef, { width }] = useElementSize();
   return (
     <div className="flex items-start flex-row space-y-0 space-x-8 h-[200px]">
@@ -98,6 +141,28 @@ export const PlaylistHeader = ({
             <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground">
               {playlist.tracks?.total} Tracks
             </div>
+
+            <EmojiLevels
+              low="😞"
+              medium="😐"
+              high="😆"
+              level={valenceLevel}
+              title={"Valence"}
+            />
+            <EmojiLevels
+              low="😴"
+              medium="🕺"
+              high="🪩"
+              level={danceLevel}
+              title="Danceability"
+            />
+            <EmojiLevels
+              low="🐌"
+              medium="😌"
+              high="🫨"
+              level={energyLevel}
+              title="Energy"
+            />
           </div>
 
           <div>
