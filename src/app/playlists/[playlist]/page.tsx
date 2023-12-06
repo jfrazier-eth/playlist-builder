@@ -9,7 +9,6 @@ import { PlaylistHeader } from "@/components/playlists/playlist-header";
 import { PlaylistTracks } from "@/components/playlists/playlist-tracks";
 
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
 
 export default function PlaylistPage() {
   const params = useParams<{ playlist: string }>();
@@ -18,7 +17,7 @@ export default function PlaylistPage() {
   const playlist = usePlaylist(playlistId, sdk);
   const tracks = usePlaylistTracks(playlistId, sdk);
 
-  const features = usePlaylistFeatures(tracks.state, sdk);
+  const { features, averages } = usePlaylistFeatures(tracks.state, sdk);
 
   return (
     <div className="flex flex-col h-screen w-full">
@@ -28,7 +27,7 @@ export default function PlaylistPage() {
             `Failed to fetch data ${playlist.error}`
           ) : (
             <div>
-              <PlaylistHeader playlist={playlist.data} />
+              <PlaylistHeader playlist={playlist.data} averages={averages} />
             </div>
           )
         ) : (

@@ -6,7 +6,6 @@ import {
 import {
   AsyncData,
   PaginationResponse,
-  UnwrappedPaginationResponse,
   useItem,
   usePagination,
 } from "./pagination";
@@ -45,6 +44,10 @@ export const usePlaylistTracks = (playlistId: string, sdk: SpotifyApi) => {
   return usePagination<PlaylistedTrack>(loadNext, true);
 };
 
+export type AudioFeatureAverages = Omit<
+  AudioFeatures,
+  "type" | "id" | "uri" | "track_href" | "analysis_url"
+>;
 export const usePlaylistFeatures = (
   tracks: PaginationResponse<PlaylistedTrack>,
   sdk: SpotifyApi,
@@ -93,6 +96,9 @@ export const usePlaylistFeatures = (
       );
 
       for (const feature of features) {
+        if (!feature) {
+          continue;
+        }
         localStorage.setItem(
           `audio-features:${feature.id}`,
           JSON.stringify(feature),
@@ -133,5 +139,57 @@ export const usePlaylistFeatures = (
     };
   }, [tracks]);
 
-  return tracksWithFeatures;
+  const defaultAverages = () => {
+    return {
+      danceability: 0,
+      energy: 0,
+      key: 0,
+      loudness: 0,
+      mode: 0,
+      speechiness: 0,
+      acousticness: 0,
+      instrumentalness: 0,
+      liveness: 0,
+      valence: 0,
+      tempo: 0,
+      duration_ms: 0,
+      time_signature: 0,
+    };
+  };
+
+  const [averages, setAverages] = useState<AudioFeatureAverages>(
+    defaultAverages(),
+  );
+
+  useEffect(() => {
+    if (tracksWithFeatures.isReady) {
+      if ("error" in tracksWithFeatures) {
+        setAverages(defaultAverages);
+      } else {
+        let sum: AudioFeatureAverages = tracksWithFeatures.data.reduce(
+          (sum, item) => {
+            for (const key of Object.keys(sum) as (keyof typeof sum)[]) {
+              sum[key] += item.features[key];
+            }
+
+            return sum;
+          },
+          defaultAverages(),
+        );
+
+        for (const key of Object.keys(sum) as (keyof typeof sum)[]) {
+          sum[key] = sum[key] / tracksWithFeatures.data.length;
+        }
+
+        setAverages(sum);
+      }
+    } else {
+      setAverages(defaultAverages);
+    }
+  }, [tracksWithFeatures]);
+
+  return {
+    features: tracksWithFeatures,
+    averages,
+  };
 };
