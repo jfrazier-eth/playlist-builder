@@ -1,4 +1,4 @@
-# Spotify Playlist Analyzer
+# Spotify Playlist Builder/Analyzer
 
 ## Status: 🚧 Under Construction 🚧
 * View the latest version at [https://pwr.jfrazier.dev](https://pwr.jfrazier.dev)
