@@ -1,8 +1,8 @@
 import { SimplifiedPlaylist } from "@spotify/web-api-ts-sdk";
 import { AudioFeatureAverages } from "../hooks/playlists";
 import { AnimatedBarSeries, Tooltip, XYChart } from "@visx/xychart";
-import { useElementSize } from "@/app/playlists/[playlist]/page";
 import { EmojiLevelByType } from "../emoji-levels";
+import { useElementSize } from "../hooks/element-size";
 
 export const PlaylistHeader = ({
   playlist,

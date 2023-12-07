@@ -1,7 +1,7 @@
-import { useElementSize } from "@/app/playlists/[playlist]/page";
 import { AudioFeatures, PlaylistedTrack } from "@spotify/web-api-ts-sdk";
 import { DataSet, LineChart } from "../charts.tsx/line";
 import { EmojiLevelByType } from "../emoji-levels";
+import { useElementSize } from "../hooks/element-size";
 
 export const PlaylistTracks = ({
   items,

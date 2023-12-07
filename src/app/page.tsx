@@ -1,7 +1,7 @@
 "use client";
 import { Avatar } from "@/components/avatar";
 import { usePlaylists } from "@/components/hooks/playlists";
-import { useSpotify } from "@/components/hooks/useSpotify";
+import { useSpotify } from "@/components/hooks/spotify";
 import { useUser } from "@/components/hooks/user";
 import { Playlists } from "@/components/playlists/playlists";
 import { SpotifyApi } from "@spotify/web-api-ts-sdk";
@@ -73,13 +73,17 @@ const LoggedInUser = ({ sdk }: { sdk: SpotifyApi }) => {
   );
 };
 
-const checkIsLoggedIn = () => {
-  const value = localStorage.getItem(
-    "spotify-sdk:AuthorizationCodeWithPKCEStrategy:token",
-  );
-  return !!value;
-};
 export default function Home() {
+  const checkIsLoggedIn = () => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    const value = localStorage.getItem(
+      "spotify-sdk:AuthorizationCodeWithPKCEStrategy:token",
+    );
+    return !!value;
+  };
   const { sdk } = useSpotify();
   const isLoggedIn = checkIsLoggedIn();
   const search = useSearchParams();
