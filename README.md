@@ -6,12 +6,13 @@
 ## Features
 
 ### View playlists
-![home page]("https://github.com/jfrazier-eth/playlist-builder/blob/main/assets/home.png?raw=true")
+![home page](https://github.com/jfrazier-eth/playlist-builder/assets/54604023/44917f10-56b9-41b8-aa56-ec347ddf9584)
 
 * Select a playlist to view more info.
 
 ### View playlist details
-![playlist page]("https://github.com/jfrazier-eth/playlist-builder/blob/main/assets/playlist.png?raw=true")
+![playlisy page](https://github.com/jfrazier-eth/playlist-builder/assets/54604023/9f9c4c69-f724-41de-9d60-0a1cab5a0d3c)
+
 
 * View playlist average valence, energy, and danceability.
 * Utilize the line chart view trends across songs in a playlist.
